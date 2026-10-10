@@ -56,6 +56,9 @@ public class SkeletonVisualizer {
 		Segment rightCalf = new Segment(90, Math.toRadians(-10));
 		leftThigh.addChild(leftCalf);
 		rightThigh.addChild(rightCalf);
+		// FINGERS
+		//Segment finger1 = new Segment(20, Math.toRadians(0));
+		//leftCalf.addChild(finger1);
 
 		// Exoskeleton drawing
 		SkeletonPanel panel = new SkeletonPanel(hip, 600, 600);

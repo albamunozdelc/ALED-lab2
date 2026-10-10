@@ -25,12 +25,40 @@ public class ForwardKinematics {
 	 *         coordinates.
 	 */
 	// Public method: returns the root of the position tree
+	//MÉTODO FACHADA: llama al privado recursivo con los parámetros del PRIVATE
 	public static Node computePositions(Segment root, double originX, double originY) {
-		// TODO: Implemente este método
+		return computePositions(root, originX, originY, 0.0);
+		
 	}
 
 	// Private helper method that implements the recursive algorithm
 	private static Node computePositions(Segment link, double baseX, double baseY, double accumulatedAngle) {
-		// TODO: Implemente este método
+		long startTime = System.nanoTime();
+		
+		//CÓDIGO GENERAL
+		//para un segmento concreto (link) genero el nodo de adonde llega
+		accumulatedAngle += link.getAngle();
+		double x = baseX + link.getLength() * Math.cos(accumulatedAngle);
+		double y = baseY + link.getLength() * Math.sin(accumulatedAngle);
+		Node nodo = new Node(x, y);
+		
+		
+		//CASO BASE: si mi segmento no tiene hijos
+		if (link.getChildren().size() == 0) {
+			return nodo;
+		}
+	
+		
+		//PASO RECURSIVO: si tiene hijos los voy recorriendo uno a uno
+		for (Segment child : link.getChildren()) {
+			//que me generen el nodo al que llegan
+			Node childNode = computePositions(child, x, y, accumulatedAngle);
+			//los añado como hijos del nodo que yo estaba creando
+			nodo.addChild(childNode);
+		}
+		long runningTime = System.nanoTime() - startTime;
+		System.out.println("Tiempo de computePositions para un segmento con " + link.getChildren().size() 
+				+ " hijos: " + runningTime + " nanosegundos");
+		return nodo;
 	}
 }
